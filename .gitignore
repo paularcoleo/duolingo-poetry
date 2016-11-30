@@ -52,3 +52,7 @@ Temporary Items
 
 # Secret files...
 default_settings.py
+
+# databased
+*.db
+*.sqlite3
