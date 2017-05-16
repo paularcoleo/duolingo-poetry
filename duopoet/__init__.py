@@ -47,7 +47,13 @@ def add_fragments():
 		abort(404)
 
 
-@app.route('/poems/random', methods=['GET', 'POST'])
-def poems_main():
-	fragments = fs.get_random_fragments(3)
-	return render_template('poems.html', fragments=fragments)
+@app.route('/poems/random/<int:n>', methods=['GET', 'POST'])
+def poems_main(n):
+	if n > 5:
+		fragments = ['Sorry, max 5 sentences are allowed in a poem. ¯\_(ツ)_/¯']
+		fragment_order = None
+	else:
+		fragments = fs.get_random_fragments(n)
+		fragment_order = [fragment.id for fragment in fragments]
+		fragments = [fragment.text for fragment in fragments]
+	return render_template('poems.html', fragments=fragments, fragment_order=fragment_order)

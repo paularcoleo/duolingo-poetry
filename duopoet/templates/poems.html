@@ -1,10 +1,15 @@
 {% extends 'base.html' %}
 
-
 {% block body %}
 
-{% for fragment in fragments %}
-	<h1>{{ fragment.text }}</h1>
-{% endfor %}
+<div class="card-panel teal lighten-2 poem-card white-text">
+        {% for fragment in fragments %}
+            <h3>{{ fragment }}</h3>
+        {% endfor %}
+        <!-- <a class="btn-floating halfway-fab waves-effect waves-light white"><i class="material-icons teal-text">thumb_up</i></a>
+        <a class="btn-floating halfway-fab waves-effect waves-light white"><i class="material-icons teal-text">thumb_down</i></a> -->
+        <a class="btn-floating halfway-fab waves-effect waves-light white" onClick="window.location.reload()"><i class="material-icons teal-text">loop</i></a>
+        <a class="btn-floating halfway-fab waves-effect waves-light white"><i class="material-icons teal-text">library_add</i></a> 
+</div>
 
 {% endblock body %}

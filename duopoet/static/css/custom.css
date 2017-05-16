@@ -1,3 +1,13 @@
-#dp-logo {
-	margin-left: 5em;
+.poem-card {
+    margin-top: 2em;
+}
+
+.poem-content h3 {
+    color: white;
+    font-weight: 400; !important
+}
+
+.card-panel a {
+    margin: 0.5em;
+    margin-top: 3em;
 }
