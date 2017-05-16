@@ -53,6 +53,13 @@ Temporary Items
 # Secret files...
 default_settings.py
 
-# databased
-*.db
+# *.db
 *.sqlite3
+
+*.ini
+*.mako
+env.py
+*.ini
+migrations/alembic.ini
+migrations/env.py
+*.mako

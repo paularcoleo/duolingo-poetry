@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+
+{% for fragment in fragments %}
+	<h1>{{ fragment.text }}</h1>
+{% endfor %}
+
+{% endblock body %}

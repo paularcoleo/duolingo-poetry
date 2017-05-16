@@ -35,24 +35,15 @@
 
 </head>
 <body>
-	
-	<div class="container">
-	 <nav>
-    <div class="nav-wrapper teal lighten-2">
-      <a href="#" class="brand-logo dp-logo">&nbsp;DuoPoet</a>
-      <ul id="nav-mobile" class="right">
-        {% if current_user.is_authenticated %}
-        	<li>Welcome, {{ current_user.email }}!</li>
-        	<li><a href="{{ url_for_security('logout') }}">Logout</a></li>
-        {% else %}
-        	<li><a href="{{ url_for_security('register') }}"><i class="material-icons left">fingerprint</i>Register</a></li>
-        	<li><a href="{{ url_for_security('login') }}"><i class="material-icons left">account_circle</i>Login</a></li>
-        {% endif %}
-      </ul>
-    </div>
-  </nav>
-	
-	
+	<nav>
+	    <div class="nav-wrapper teal lighten-2">
+	      <a href="#" class="brand-logo dp-logo">&nbsp;DuoPoet</a>
+	      <ul id="nav-mobile" class="right">
+	      </ul>
+	    </div>
+  	</nav>
+  	
+  	<div class="container">
 		{% block body %}
 		{% endblock body %}
 	</div>

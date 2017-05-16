@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<form method="POST" action="{{ url_for('add_fragments') }}" class="form-horizontal">
+    {{ csrf_token }}
+	<br>
+	<div class="input-field">
+        {{ form.fragments(class='materialize-textarea', rows='10', required=True, autofocus=True) }}
+        {{ form.fragments.label() }}
+    </div>
+    <div class="input-field">
+        {{ form.submit(class='btn') }}	
+    </div>
+</form>
+
+{% endblock body %}

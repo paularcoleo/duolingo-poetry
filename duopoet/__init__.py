@@ -1,9 +1,10 @@
-from flask import Flask, render_template, url_for, abort, request
+from flask import Flask, render_template, url_for, abort, request, jsonify, flash
 from flask_script import Manager, Server
 from flask_migrate import Migrate, MigrateCommand
 from flask_sqlalchemy import SQLAlchemy
-from flask_security import Security, SQLAlchemyUserDatastore
-from flask_security import login_required, current_user
+
+from datetime import datetime
+import random
 
 app = Flask(__name__)
 app.config.from_object('duopoet.default_settings')
@@ -14,26 +15,39 @@ migrate = Migrate(app, db)
 manager.add_command('db', MigrateCommand)
 manager.add_command('runserver', Server(threaded=True))
 
-# Flask Security defined Models
-from duopoet.models import Member, Role
-# Custom Models
-from duopoet.models import Fragment, Poem
+from duopoet.forms import AddFragmentsForm
+from duopoet.services import FragmentService, PoemService
 
-user_datastore = SQLAlchemyUserDatastore(db, Member, Role)
-Security = Security(app, user_datastore)
+fs = FragmentService()
+ps = PoemService()
 
 @app.route('/')
 def home():
 	return render_template('base.html')
 
-@app.route('/ok')
-@login_required
-def test():
-	return "ok, you loggin in now {0}".format(current_user.email)
-
-@app.route('/add-fragments', methods=['POST', 'GET'])
+@app.route('/fragments/add', methods=['GET', 'POST'])
 def add_fragments():
-	if request.method == "GET":
-		return "ok let's go"
+	if request.method == 'GET':
+		return render_template('add_fragments.html', form=AddFragmentsForm())
+	elif request.method == 'POST':
+		fragments = request.form.get('fragments').splitlines()
+		date = datetime.utcnow().date()
+		exists = []
+		for fragment in fragments:
+			if fs.is_unique(fragment):
+				if fragment[-1] not in ['.', '?', '!']:
+					fragment += '.' 
+				fs.create(text=fragment, date_uploaded=date)
+			else:
+				exists.append(fragment)
+		if exists:
+			flash('{} Fragments already existed, and were not added.'.format(len(exists)))
+		return jsonify(fragments), 200
 	else:
-		return abort(404)
+		abort(404)
+
+
+@app.route('/poems/random', methods=['GET', 'POST'])
+def poems_main():
+	fragments = fs.get_random_fragments(3)
+	return render_template('poems.html', fragments=fragments)
