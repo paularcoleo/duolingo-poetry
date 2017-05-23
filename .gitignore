@@ -63,3 +63,5 @@ env.py
 migrations/alembic.ini
 migrations/env.py
 *.mako
+duopoet/app.db
+duopoet/app.db

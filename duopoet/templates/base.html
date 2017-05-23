@@ -42,8 +42,26 @@
 	      </ul>
 	    </div>
   	</nav>
+
+
   	
   	<div class="container">
+		{% with messages = get_flashed_messages(with_categories=true) %}
+			{% if messages %}
+				<div class="row">
+					{% for category, message in messages %}
+						{% if category == 'success' %}
+							<div class="col s12 green" style="padding:1em;margin:1em;">{{ message }}</div>
+						{% else %}
+							<div class="col s12 yellow" style="padding:1em;margin:1em;">{{ message }}</div>
+						{% endif %}
+					{% endfor %}
+				</div>
+			{% endif %}
+		{% endwith %}
+
+
+
 		{% block body %}
 		{% endblock body %}
 	</div>

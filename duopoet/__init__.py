@@ -34,11 +34,7 @@ def add_fragments():
 		fragments = request.form.get('fragments').splitlines()
 		date = datetime.utcnow().date()
 		exists = []
-		needs_redo = []
 		for fragment in fragments:
-			if '/' in fragment or "'" in fragment:
-				needs_redo.append(fragment)
-				continue
 			if fs.is_unique(fragment):
 				if fragment[-1] not in ['.', '?', '!']:
 					fragment += '.' 
@@ -47,9 +43,6 @@ def add_fragments():
 				exists.append(fragment)
 		if exists:
 			flash('{} Fragments already existed, and were not added.'.format(len(exists)))
-		if needs_redo:
-			flash('{} fragments need to be redone, because they have slashes or apostrophes.'.format(len(needs_redo)), Markup(needs_redo))
-			return redirect(url_for('add_fragments'))
 		return jsonify(fragments), 200
 	else:
 		abort(404)
