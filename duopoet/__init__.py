@@ -1,7 +1,8 @@
-from flask import Flask, render_template, url_for, abort, request, jsonify, flash
+from flask import Flask, render_template, url_for, abort, request, jsonify, flash, redirect
 from flask_script import Manager, Server
 from flask_migrate import Migrate, MigrateCommand
 from flask_sqlalchemy import SQLAlchemy
+from markupsafe import Markup
 
 from datetime import datetime
 import random
@@ -33,7 +34,11 @@ def add_fragments():
 		fragments = request.form.get('fragments').splitlines()
 		date = datetime.utcnow().date()
 		exists = []
+		needs_redo = []
 		for fragment in fragments:
+			if '/' in fragment or "'" in fragment:
+				needs_redo.append(fragment)
+				continue
 			if fs.is_unique(fragment):
 				if fragment[-1] not in ['.', '?', '!']:
 					fragment += '.' 
@@ -42,13 +47,18 @@ def add_fragments():
 				exists.append(fragment)
 		if exists:
 			flash('{} Fragments already existed, and were not added.'.format(len(exists)))
+		if needs_redo:
+			flash('{} fragments need to be redone, because they have slashes or apostrophes.'.format(len(needs_redo)), Markup(needs_redo))
+			return redirect(url_for('add_fragments'))
 		return jsonify(fragments), 200
 	else:
 		abort(404)
 
-
+@app.route('/poems/random')
 @app.route('/poems/random/<int:n>', methods=['GET', 'POST'])
-def poems_main(n):
+def poems_main(n=None):
+	if n is None:
+		n = random.randint(1,5)
 	if n > 5:
 		fragments = ['Sorry, max 5 sentences are allowed in a poem. ¯\_(ツ)_/¯']
 		fragment_order = None
