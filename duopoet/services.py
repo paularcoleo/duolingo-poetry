@@ -56,17 +56,24 @@ class Service():
 
 
 class FragmentService(Service):
-	__model__ = Fragment
-	def __init__(self, *args, **kwargs):
-		super(FragmentService, self).__init__(*args, **kwargs)
+    __model__ = Fragment
+    def __init__(self, *args, **kwargs):
+        super(FragmentService, self).__init__(*args, **kwargs)
 
-	def get_random_fragments(self, n):
-		fragments = self.__model__.query.order_by(func.random()).limit(n).all()
-		return fragments
+    def get_random_fragments(self, n):
+        fragments = self.__model__.query.filter_by(approved=True).order_by(func.random()).limit(n).all()
+        return fragments
 
-	def is_unique(self, text):
-		fragments = self.find(text=text).all()
-		return True if len(fragments) == 0 else False
+    def get_unapproved_fragments(self, n):
+        fragments = self.__model__.query.filter_by(approved=False).order_by(func.random()).limit(n).all()
+        return fragments
+
+    def approve(self, fragment):
+        return self.update(fragment, approved=True, date_approved=datetime.utcnow().date())
+
+    def is_unique(self, text):
+        fragments = self.find(text=text).all()
+        return True if len(fragments) == 0 else False
 
 class PoemService(Service):
 	__model__ = Poem

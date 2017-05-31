@@ -9,6 +9,8 @@ poems_fragments = db.Table('poems_fragments',
 class Fragment(db.Model):
 	id = db.Column(db.Integer(), primary_key=True)
 	text = db.Column(db.String(250), nullable=False, unique=True)
+	approved = db.Column(db.Boolean(), nullable=False, default=False)
+	date_approved = db.Column(db.Date())
 	date_uploaded = db.Column(db.Date(), nullable=False)
 
 	def __str__(self):

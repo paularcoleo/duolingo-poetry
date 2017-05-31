@@ -2,11 +2,11 @@
 
 {% block body %}
 
-<form method="POST" action="{{ url_for('add_fragments') }}" class="form-horizontal">
+<form method="POST" action="{{ url_for('add_fragments') }}">
     {{ csrf_token }}
 	<br>
 	<div class="input-field">
-        {{ form.fragments(class='materialize-textarea', rows='10', required=True, autofocus=True) }}
+        {{ form.fragments(class='materialize-textarea', required=True, autofocus=True) }}
         {{ form.fragments.label() }}
     </div>
     <div class="input-field">
