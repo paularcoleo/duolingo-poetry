@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="row">
+    <div class="col s8 offset-s2">
+        <div class="card-panel teal lighten-2 poem-card white-text">
+            {% set fragment_order = poem.fragment_order.split(',') %}
+            {% for frag_id in fragment_order %}
+                {% for fragment in poem.fragments %}
+                    {% if fragment.id == frag_id|int %}
+                        <h3>{{ fragment.text }}</h3>
+                    {% endif  %}
+                {% endfor %}
+            {% endfor %}
+            <p>Created {{ poem.date_created.strftime('%d/%m/%y @ %I:%M %p UTC') }}</p>
+        </div>
+        <a href="{{ url_for('poems_main') }}" class="btn"> Make a New Poem</a>
+    </div>
+</div>
+{% endblock body %}

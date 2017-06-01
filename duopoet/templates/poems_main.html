@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block nocontainer %}
+
+    {% for poem in poems %}
+        {% set poem_content = poem.fragment_list() %}
+            {% for line in poem_content %}
+                {{ line }}
+                <br>
+            {% endfor %}
+        <hr>
+    {% endfor %}
+
+{% endblock nocontainer %}

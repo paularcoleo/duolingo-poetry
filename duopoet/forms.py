@@ -11,3 +11,7 @@ class ApproveFragmentsForm(FlaskForm):
     fragment_text = StringField('Fragment')
     submit = SubmitField('Approve Fragment')
     delete = SubmitField('Delete Fragment')
+
+class PoemForm(FlaskForm):
+    fragment_order = StringField()
+    submit = SubmitField('Save Poem')

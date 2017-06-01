@@ -37,9 +37,9 @@
 <body>
 	<nav>
 	    <div class="nav-wrapper teal lighten-2">
-	      <a href="#" class="brand-logo dp-logo">&nbsp;DuoPoet</a>
-	      <ul id="nav-mobile" class="right">
-	      </ul>
+	    <div class="center-align">	
+	    	 <a href="{{ url_for('poems') }}" class="dp-logo">DuoPoet</a>
+	    </div>
 	    </div>
   	</nav>
 
@@ -65,6 +65,9 @@
 		{% block body %}
 		{% endblock body %}
 	</div>
+
+	{% block nocontainer %}
+	{% endblock nocontainer %}
 	
 </body>
 </html>

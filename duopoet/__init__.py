@@ -18,6 +18,7 @@ manager.add_command('db', MigrateCommand)
 manager.add_command('runserver', Server(threaded=True))
 
 from duopoet.forms import AddFragmentsForm, ApproveFragmentsForm
+from duopoet.forms import PoemForm
 from duopoet.services import FragmentService, PoemService
 
 fs = FragmentService()
@@ -84,17 +85,41 @@ def approve_fragments():
 
 
 
-@app.route('/poems/random')
+@app.route('/poems/random', methods=['GET', 'POST'])
 @app.route('/poems/random/<int:n>', methods=['GET', 'POST'])
 def poems_main(n=None):
-	if n is None:
-		n = random.randint(2,5)
-	if n > 5:
-		fragments = ['Sorry, max 5 sentences are allowed in a poem.']
-		fragment_order = None
-	else:
-		fragments = fs.get_random_fragments(n)
-		fragment_order = [fragment.id for fragment in fragments]
-		fragments = [fragment.text for fragment in fragments]
-	return render_template('poems.html', fragments=fragments,
-		fragment_order=fragment_order)
+    if request.method == 'GET':
+    	if n is None:
+    		n = random.randint(2,5)
+    	if n > 5:
+    		fragments = ['Sorry, max 5 sentences are allowed in a poem.']
+    		fragment_order = None
+    	else:
+    		fragments = fs.get_random_fragments(n)
+    		fragment_order = ','.join([str(fragment.id) for fragment in fragments])
+    		fragments = [fragment.text for fragment in fragments]
+    	return render_template('poems_random.html', fragments=fragments,
+    		fragment_order=fragment_order, form=PoemForm())
+    elif request.method == 'POST':
+        fragment_order = request.form.get('fragment_order')
+        if fragment_order is not None:
+            fragment_ids = [int(frag) for frag in fragment_order.split(',')]
+            fragments = fs.get_all(fragment_ids)
+            poem = ps.create(fragments, fragment_order)
+
+            return redirect(url_for('poem_detail', id=poem.id))
+
+
+@app.route('/poems/<id>', methods=['GET'])
+def poem_detail(id):
+    poem = ps.get(id)
+    if poem is not None:
+        return render_template('poems_detail.html', poem=poem)
+    else:
+        abort(404)
+
+
+@app.route('/poems/', methods=['GET'])
+def poems():
+    poems = ps.get_most_recent(10)
+    return render_template('poems_main.html', poems=poems)

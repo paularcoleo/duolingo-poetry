@@ -76,6 +76,18 @@ class FragmentService(Service):
         return True if len(fragments) == 0 else False
 
 class PoemService(Service):
-	__model__ = Poem
-	def __init__(self, *args, **kwargs):
-		super(PoemService, self).__init__(*args, **kwargs)
+    __model__ = Poem
+    def __init__(self, *args, **kwargs):
+        super(PoemService, self).__init__(*args, **kwargs)
+
+    def create(self, fragments, fragment_order):
+        new_poem = self.__model__(
+            fragment_order=fragment_order,
+            date_created=datetime.utcnow()
+        )
+        for fragment in fragments:
+            new_poem.fragments.append(fragment)
+        return self.save(new_poem)
+
+    def get_most_recent(self, n=1):
+        return self.__model__.query.order_by(self.__model__.date_created.desc()).limit(n).all()

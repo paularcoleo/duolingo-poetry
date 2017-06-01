@@ -22,8 +22,15 @@ class Fragment(db.Model):
 
 class Poem(db.Model):
 	id = db.Column(db.Integer(), primary_key=True)
-	fragment_order = db.Column(db.PickleType, nullable=False)
-
+	fragment_order = db.Column(db.String(500), nullable=False)
+	date_created = db.Column(db.DateTime())
 	fragments = db.relationship('Fragment', secondary=poems_fragments,
 		backref=db.backref('poems', lazy='dynamic'))
 
+	def fragment_list(self):
+		strings = []
+		for frag_id in self.fragment_order.split(','):
+			for fragment in self.fragments:
+				if fragment.id == int(frag_id):
+					strings.append(fragment.text)
+		return strings

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<div class="row">
+    <div class="col s8 offset-s2">
+        <div class="card-panel teal lighten-2 poem-card white-text">
+                {% for fragment in fragments %}
+                    <h3>{{ fragment }}</h3>
+                {% endfor %}
+                <form method="POST" action="{{ url_for('poems_main') }}">
+                    {{ csrf_token }}
+                    {{ form.fragment_order(hidden=True, value=fragment_order)}}
+                    <a class="btn white" onClick="window.location.reload()"><i class="material-icons teal-text">loop</i></a>
+                    {{ form.submit(class='btn white teal-text', style='margin-top:2.5em;') }}
+                </form>
+        </div>
+    </div>
+</div>
+
+{% endblock body %}
