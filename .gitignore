@@ -65,3 +65,5 @@ migrations/env.py
 *.mako
 duopoet/app.db
 duopoet/app.db
+
+\.vscode/settings\.json

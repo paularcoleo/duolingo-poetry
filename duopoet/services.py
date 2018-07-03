@@ -67,13 +67,20 @@ class FragmentService(Service):
     def get_unapproved_fragments(self, n):
         fragments = self.__model__.query.filter_by(approved=False).order_by(func.random()).limit(n).all()
         return fragments
+    
+    def lookup(self, text):
+        fragment = self.find(text=text).first()
+        return fragment
 
     def approve(self, fragment):
         return self.update(fragment, approved=True, date_approved=datetime.utcnow().date())
 
-    def is_unique(self, text):
-        fragments = self.find(text=text).all()
-        return True if len(fragments) == 0 else False
+    def is_unique(self, text, id=None):
+        dupe_fragment = self.lookup(text)
+        if dupe_fragment:
+            return True if dupe_fragment.id == id else False
+        else:
+            return True
 
 class PoemService(Service):
     __model__ = Poem

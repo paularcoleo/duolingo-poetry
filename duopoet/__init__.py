@@ -20,6 +20,7 @@ manager.add_command('runserver', Server(threaded=True))
 from duopoet.forms import AddFragmentsForm, ApproveFragmentsForm
 from duopoet.forms import PoemForm
 from duopoet.services import FragmentService, PoemService
+import duopoet.views
 
 fs = FragmentService()
 ps = PoemService()
@@ -60,17 +61,16 @@ def approve_fragments():
 	elif request.method == 'POST':
 		submit = request.form.get('submit')
 		delete = request.form.get('delete')
-		fragment_id = request.form.get('fragment_id')
+		fragment_id = int(request.form.get('fragment_id'))
 		if submit and not delete:
 			fragment_text = request.form.get('fragment_text')
-			if fs.is_unique(fragment_text):
+			if fs.is_unique(fragment_text, id=fragment_id):
 				fragment = fs.get(fragment_id)
 				fragment = fs.update(fragment, text=fragment_text)
 				fragment = fs.approve(fragment)
 				flash('Fragment Approved: {}'.format(fragment.text), 'success')
 				return redirect(url_for('approve_fragments'))
 			else:
-
 				fragment = fs.get(fragment_id)
 				fs.delete(fragment)
 				flash('Revised Fragment Conflicted with existing fragment and is now Deleted.', 'error')
@@ -82,8 +82,6 @@ def approve_fragments():
 			return redirect(url_for('approve_fragments'), 'warning')
 		else:
 			abort(404)
-
-
 
 @app.route('/poems/random', methods=['GET', 'POST'])
 @app.route('/poems/random/<int:n>', methods=['GET', 'POST'])
