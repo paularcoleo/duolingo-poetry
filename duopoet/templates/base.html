@@ -37,10 +37,12 @@
 <body>
 	<nav>
 	    <div class="nav-wrapper teal lighten-2">
-	    <div class="center-align">	
-	    	 <a href="{{ url_for('poems') }}" class="dp-logo">DuoPoet</a>
-	    </div>
-	    </div>
+			<a href="{{ url_for('poems') }}" class="brand-logo dp-logo center">DuoPoet</a>
+			<ul class="right">
+				<li><a href="{{ url_for('generate_poems') }}">Generate Poems!</a></li>
+				<li><a href="{{ url_for('about') }}">... what is this?</a></li>
+			</ul>
+		</div>
   	</nav>
 
 

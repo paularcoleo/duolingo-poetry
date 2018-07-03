@@ -7,5 +7,5 @@ ps = PoemService()
 
 @app.route('/poems/', methods=['GET'])
 def poems():
-    poems = ps.get_most_recent(10)
+    poems = ps.get_most_recent(60)
     return render_template('poems_main.html', poems=poems)

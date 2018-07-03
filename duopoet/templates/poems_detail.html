@@ -12,9 +12,9 @@
                     {% endif  %}
                 {% endfor %}
             {% endfor %}
-            <p>Created {{ poem.date_created.strftime('%d/%m/%y @ %I:%M %p UTC') }}</p>
+            <p>Created {{ poem.date_created.strftime('%m/%d/%y @ %I:%M %p UTC') }}</p>
         </div>
-        <a href="{{ url_for('poems_main') }}" class="btn"> Make a New Poem</a>
+        <a href="{{ url_for('generate_poems') }}" class="btn"> Make a New Poem</a>
     </div>
 </div>
 {% endblock body %}

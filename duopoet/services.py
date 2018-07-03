@@ -96,5 +96,9 @@ class PoemService(Service):
             new_poem.fragments.append(fragment)
         return self.save(new_poem)
 
-    def get_most_recent(self, n=1):
+    def get_n_most_recent(self, n=1):
         return self.__model__.query.order_by(self.__model__.date_created.desc()).limit(n).all()
+
+    def get_n_random(self, n=1):
+        poems = self.__model__.query.order_by(func.random()).limit(n).all()
+        return poems

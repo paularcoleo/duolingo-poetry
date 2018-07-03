@@ -1,14 +1,28 @@
+{% macro poem_card(poem) %}
+    <div class="col s12 m6 l4">
+        <div class="card-panel teal lighten-2 poem-card white-text" style="margin-bottom:0; margin-top:0.75rem;">
+            <div class="card-content" style="font-size: 1.25rem; height: 9rem;">
+                {% set poem_content = poem.fragment_list() %}
+                {% for line in poem_content %}
+                    {{ line }}
+                    <br>
+                {% endfor %}
+            </div>
+            <div class="card-action">
+                <p style="margin-bottom:0; padding-bottom:0;">Created {{ poem.date_created.strftime('%m/%d/%y @ %I:%M %p UTC') }}</p>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
 {% extends 'base.html' %}
 
-{% block nocontainer %}
-
-    {% for poem in poems %}
-        {% set poem_content = poem.fragment_list() %}
-            {% for line in poem_content %}
-                {{ line }}
-                <br>
-            {% endfor %}
-        <hr>
-    {% endfor %}
-
-{% endblock nocontainer %}
+{% block body %}
+    <br>
+    <!-- <h5 style="font-weight:500;">Recently Generated DuoPoems</h1> -->
+    <div class="row">
+        {% for poem in poems %}
+            {{ poem_card(poem) }}
+        {% endfor %}
+    </div>
+{% endblock body %}

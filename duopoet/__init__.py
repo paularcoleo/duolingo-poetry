@@ -1,9 +1,8 @@
-from flask import Flask, render_template, url_for, abort
-from flask import request, jsonify, flash, redirect
+from flask import Flask, url_for
+from flask import redirect
 from flask_script import Manager, Server
 from flask_migrate import Migrate, MigrateCommand
 from flask_sqlalchemy import SQLAlchemy
-from markupsafe import Markup
 
 from datetime import datetime
 import random
@@ -21,4 +20,4 @@ import duopoet.views
 
 @app.route('/')
 def home():
-	return render_template('base.html')
+	return redirect(url_for('poems'))
