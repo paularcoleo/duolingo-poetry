@@ -53,7 +53,7 @@ Temporary Items
 # Secret files...
 default_settings.py
 
-# *.db
+*.db
 *.sqlite3
 
 *.ini
