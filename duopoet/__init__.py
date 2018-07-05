@@ -1,5 +1,4 @@
-from flask import Flask, url_for
-from flask import redirect
+from flask import Flask, url_for, send_from_directory, redirect
 from flask_script import Manager, Server
 from flask_migrate import Migrate, MigrateCommand
 from flask_sqlalchemy import SQLAlchemy
@@ -21,3 +20,8 @@ import duopoet.views
 @app.route('/')
 def home():
 	return redirect(url_for('poems'))
+
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory('static', filename='img/duopoet.png')
